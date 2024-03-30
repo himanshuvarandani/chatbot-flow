@@ -1,9 +1,48 @@
-import ReactFlow, { useEdgesState, useNodesState } from "reactflow"
+import ReactFlow, { Controls, Node, ReactFlowInstance, ReactFlowProvider, useEdgesState, useNodesState } from "reactflow"
 import NodesPanel from "./comonents/NodesPanel"
+import { useCallback, useRef, useState } from "react"
+import 'reactflow/dist/style.css'
+import TextMessageNode from "./comonents/TextMessageNode"
+
+type NodeDataType = { text: string }
+type NodeType = Node<NodeDataType, string>
+type ReactFlowInstanceType = ReactFlowInstance<NodeDataType>
 
 function App() {
-  const [nodes, setNodes, onNodesChange] = useNodesState([])
+  const reactFlowWrapper = useRef<HTMLDivElement>(null)
+  const [nodes, setNodes, onNodesChange] = useNodesState<NodeDataType>([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
+  const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstanceType>()
+
+  const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    event.dataTransfer.dropEffect = "move"
+  }, [])
+
+  const onDrop = useCallback((event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    const type = event.dataTransfer.getData("nodeType")
+    if (!type) return
+    if (!reactFlowWrapper.current || !reactFlowInstance) return
+
+    // Create node position
+    const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect()
+    const position = reactFlowInstance.screenToFlowPosition({
+      x: event.clientX - reactFlowBounds.left,
+      y: event.clientY - reactFlowBounds.top,
+    })
+
+    setNodes((nds) => {
+      const newNode: NodeType = {
+        id: String(nds.length+1),
+        type,
+        position,
+        data: { text: 'New Message' },
+      }
+
+      return nds.concat(newNode)
+    })
+  }, [reactFlowInstance])
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -16,13 +55,22 @@ function App() {
       </header>
 
       <div className="flex flex-auto">
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-        />
-        <NodesPanel />
+        <ReactFlowProvider>
+          <div className="flex flex-auto" ref={reactFlowWrapper}>
+            <ReactFlow
+              nodes={nodes}
+              edges={edges}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
+              onInit={setReactFlowInstance}
+              onDrop={onDrop}
+              onDragOver={onDragOver}
+            >
+              <Controls />
+            </ReactFlow>
+          </div>
+          <NodesPanel />
+        </ReactFlowProvider>
       </div>
     </div>
   )
