@@ -1,5 +1,5 @@
-import { PanelNodeDataType, PanelPropsType } from "../../types"
 import TextMessageData from "./TextMessage/Data"
+import { PanelNodeDataType, PanelPropsType } from "../../types"
 
 // Contains all node types with thier data update components
 const nodeDataTypes: PanelNodeDataType = {

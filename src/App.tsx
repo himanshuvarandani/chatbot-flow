@@ -1,11 +1,12 @@
 import { useState } from "react"
 import { ReactFlowProvider } from "reactflow"
 import ChatbotFlow from "./comonents/ChatbotFlow"
+import Header from "./comonents/Header"
 import NodesPanel from "./comonents/NodesPanel"
 import SettingsPanel from "./comonents/SettingsPanel"
 import { NodeType } from "../types"
 import "reactflow/dist/style.css"
-import Header from "./comonents/Header"
+import "drag-drop-touch"
 
 function App() {
   const [selectedNode, setSelectedNode] = useState<NodeType | null>(null)

@@ -1,8 +1,8 @@
 import { faLeftLong } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
-import { applyNodeChanges, useReactFlow } from "reactflow"
-import { NodeType, PanelPropsType } from "../../../types"
+import { useReactFlow } from "reactflow"
+import { PanelPropsType } from "../../../types"
 
 const TextMessageData = ({ selectedNode, setSelectedNode }: PanelPropsType) => {
   const reactFlow = useReactFlow()
