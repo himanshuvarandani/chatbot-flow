@@ -1,20 +1,13 @@
 import { faMessage } from "@fortawesome/free-regular-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import React from "react"
+import { PanelNodeType } from "../../types"
 
-type PanelNodeType = {
-  type: string
-  icon: React.ReactElement
-  label: string
-}
-
-const nodes: Array<PanelNodeType> = [
-  {
-    type: "textMessage",
-    icon: <FontAwesomeIcon icon={faMessage} size="lg" />,
-    label: "Message",
-  }
-]
+const nodes: Array<PanelNodeType> = [{
+  type: "textMessage",
+  icon: <FontAwesomeIcon icon={faMessage} size="lg" />,
+  label: "Message",
+}]
 
 const NodesPanel = () => {
   const onDragStart = (

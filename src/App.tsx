@@ -2,8 +2,6 @@ import ReactFlow, {
   addEdge,
   Connection,
   Controls,
-  Node,
-  ReactFlowInstance,
   ReactFlowProvider,
   useEdgesState,
   useNodesState
@@ -12,10 +10,7 @@ import NodesPanel from "./comonents/NodesPanel"
 import { useCallback, useRef, useState } from "react"
 import 'reactflow/dist/style.css'
 import TextMessageNode from "./comonents/TextMessageNode"
-
-type NodeDataType = { text: string }
-type NodeType = Node<NodeDataType, string>
-type ReactFlowInstanceType = ReactFlowInstance<NodeDataType>
+import { NodeDataType, NodeType, ReactFlowInstanceType } from "../types"
 
 const nodeTypes = {
   textMessage: TextMessageNode,
