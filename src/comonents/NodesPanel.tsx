@@ -10,7 +10,7 @@ type PanelNodeType = {
 
 const nodes: Array<PanelNodeType> = [
   {
-    type: "default",
+    type: "textMessage",
     icon: <FontAwesomeIcon icon={faMessage} size="lg" />,
     label: "Message",
   }

@@ -1,4 +1,13 @@
-import ReactFlow, { Controls, Node, ReactFlowInstance, ReactFlowProvider, useEdgesState, useNodesState } from "reactflow"
+import ReactFlow, {
+  addEdge,
+  Connection,
+  Controls,
+  Node,
+  ReactFlowInstance,
+  ReactFlowProvider,
+  useEdgesState,
+  useNodesState
+} from "reactflow"
 import NodesPanel from "./comonents/NodesPanel"
 import { useCallback, useRef, useState } from "react"
 import 'reactflow/dist/style.css'
@@ -7,6 +16,10 @@ import TextMessageNode from "./comonents/TextMessageNode"
 type NodeDataType = { text: string }
 type NodeType = Node<NodeDataType, string>
 type ReactFlowInstanceType = ReactFlowInstance<NodeDataType>
+
+const nodeTypes = {
+  textMessage: TextMessageNode,
+}
 
 function App() {
   const reactFlowWrapper = useRef<HTMLDivElement>(null)
@@ -44,6 +57,11 @@ function App() {
     })
   }, [reactFlowInstance])
 
+  const onConnect = useCallback(
+    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
+    [],
+  )
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="flex justify-end bg-gray-100 py-2 px-20">
@@ -58,6 +76,7 @@ function App() {
         <ReactFlowProvider>
           <div className="flex flex-auto" ref={reactFlowWrapper}>
             <ReactFlow
+              nodeTypes={nodeTypes}
               nodes={nodes}
               edges={edges}
               onNodesChange={onNodesChange}
@@ -65,6 +84,7 @@ function App() {
               onInit={setReactFlowInstance}
               onDrop={onDrop}
               onDragOver={onDragOver}
+              onConnect={onConnect}
             >
               <Controls />
             </ReactFlow>
