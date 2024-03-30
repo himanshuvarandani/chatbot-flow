@@ -11,7 +11,7 @@ import {
   useEdges,
   useReactFlow
 } from "reactflow"
-import { NodeDataType } from "../../types"
+import { NodeDataType } from "../../../types"
 
 const TextMessageNode = ({ id, data, selected }: NodeProps<NodeDataType>) => {
   const reactFlow = useReactFlow()

@@ -25,7 +25,7 @@ function App() {
             selectedNode={selectedNode}
             setSelectedNode={setSelectedNode}
           />
-          <div className="w-1/3 border-2 border-gray-300">
+          <div className="w-1/3 border-2 border-gray-200">
             {!selectedNode
               ? (<NodesPanel />)
               : (

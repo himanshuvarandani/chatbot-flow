@@ -7,11 +7,11 @@ import ReactFlow, {
   useNodesState,
   useOnSelectionChange
 } from "reactflow"
-import TextMessageNode from "./TextMessageNode"
+import TextMessageNode from "./TextMessage/Node"
 import {
+  PanelPropsType,
   NodeDataType,
   NodeType,
-  PanelPropsType,
   ReactFlowInstanceType
 } from "../../types"
 

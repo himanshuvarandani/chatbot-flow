@@ -17,3 +17,7 @@ export type PanelPropsType = {
   selectedNode: NodeType | null
   setSelectedNode: React.Dispatch<React.SetStateAction<NodeType | null>>
 }
+
+export type PanelNodeDataType = {
+  [key: string]: (props: PanelPropsType) => JSX.Element
+}
