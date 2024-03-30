@@ -10,15 +10,15 @@ const Header = () => {
     const nodes = reactFlow.getNodes()
     const edges = reactFlow.getEdges()
 
-    // Count unconnected source handles
-    let unConnectedSources = 0
-    // Check for each node and edge combination to count unconncected source handles
+    // Count unconnected target handles
+    let unConnectedTargets = 0
+    // Check for each node and edge combination to count unconncected target handles
     nodes.forEach(node => {
-      if (!edges.filter(edge => edge.source === node.id).length)
-        unConnectedSources += 1
+      if (!edges.filter(edge => edge.target === node.id).length)
+        unConnectedTargets += 1
     })
 
-    if (unConnectedSources > 1) {
+    if (unConnectedTargets > 1) {
       setShowModal(true)
       setTimeout(() => setShowModal(false), 3000)
     } else {
