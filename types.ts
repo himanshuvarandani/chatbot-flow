@@ -12,3 +12,8 @@ export type PanelNodeType = {
   icon: React.ReactElement
   label: string
 }
+
+export type PanelPropsType = {
+  selectedNode: NodeType | null
+  setSelectedNode: React.Dispatch<React.SetStateAction<NodeType | null>>
+}

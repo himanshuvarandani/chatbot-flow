@@ -1,61 +1,13 @@
-import ReactFlow, {
-  addEdge,
-  Connection,
-  Controls,
-  ReactFlowProvider,
-  useEdgesState,
-  useNodesState
-} from "reactflow"
+import { useState } from "react"
+import { ReactFlowProvider } from "reactflow"
+import ChatbotFlow from "./comonents/ChatbotFlow"
 import NodesPanel from "./comonents/NodesPanel"
-import { useCallback, useRef, useState } from "react"
-import 'reactflow/dist/style.css'
-import TextMessageNode from "./comonents/TextMessageNode"
-import { NodeDataType, NodeType, ReactFlowInstanceType } from "../types"
-
-const nodeTypes = {
-  textMessage: TextMessageNode,
-}
+import SettingsPanel from "./comonents/SettingsPanel"
+import { NodeType } from "../types"
+import "reactflow/dist/style.css"
 
 function App() {
-  const reactFlowWrapper = useRef<HTMLDivElement>(null)
-  const [nodes, setNodes, onNodesChange] = useNodesState<NodeDataType>([])
-  const [edges, setEdges, onEdgesChange] = useEdgesState([])
-  const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstanceType>()
-
-  const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault()
-    event.dataTransfer.dropEffect = "move"
-  }, [])
-
-  const onDrop = useCallback((event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault()
-    const type = event.dataTransfer.getData("nodeType")
-    if (!type) return
-    if (!reactFlowWrapper.current || !reactFlowInstance) return
-
-    // Create node position
-    const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect()
-    const position = reactFlowInstance.screenToFlowPosition({
-      x: event.clientX - reactFlowBounds.left,
-      y: event.clientY - reactFlowBounds.top,
-    })
-
-    setNodes((nds) => {
-      const newNode: NodeType = {
-        id: String(nds.length+1),
-        type,
-        position,
-        data: { text: 'New Message' },
-      }
-
-      return nds.concat(newNode)
-    })
-  }, [reactFlowInstance])
-
-  const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
-    [],
-  )
+  const [selectedNode, setSelectedNode] = useState<NodeType | null>(null)
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -69,22 +21,21 @@ function App() {
 
       <div className="flex flex-auto">
         <ReactFlowProvider>
-          <div className="flex flex-auto" ref={reactFlowWrapper}>
-            <ReactFlow
-              nodeTypes={nodeTypes}
-              nodes={nodes}
-              edges={edges}
-              onNodesChange={onNodesChange}
-              onEdgesChange={onEdgesChange}
-              onInit={setReactFlowInstance}
-              onDrop={onDrop}
-              onDragOver={onDragOver}
-              onConnect={onConnect}
-            >
-              <Controls />
-            </ReactFlow>
+          <ChatbotFlow
+            selectedNode={selectedNode}
+            setSelectedNode={setSelectedNode}
+          />
+          <div className="w-1/3 border-2 border-gray-300">
+            {!selectedNode
+              ? (<NodesPanel />)
+              : (
+                <SettingsPanel
+                  selectedNode={selectedNode}
+                  setSelectedNode={setSelectedNode}
+                />
+              )
+            }
           </div>
-          <NodesPanel />
         </ReactFlowProvider>
       </div>
     </div>
